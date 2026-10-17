@@ -49,7 +49,7 @@ A mini social network: user profiles, posts, comments, likes and a follow system
 **Requirements:** Node.js **22.5 or newer**.
 
 ```bash
-git clone https://github.com/Kellaikram/CodeAlpha_SocialMediaApp.git
+git clone https://github.com/<your-username>/CodeAlpha_SocialMediaApp.git
 cd CodeAlpha_SocialMediaApp
 npm install
 npm start
@@ -129,5 +129,5 @@ The suite starts the server on port 3998 with a temporary database and checks au
 
 ## Author
 
-Kella Ikram — CodeAlpha Full Stack Development Intern
-LinkedIn:(https://www.linkedin.com/in/ikram-kella-113685287?utm_source=share_via&utm_content=profile&utm_medium=member_ios)
+**<Your Name>** — CodeAlpha Full Stack Development Intern
+LinkedIn: <your-linkedin-url>

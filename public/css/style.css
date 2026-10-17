@@ -12,7 +12,8 @@ h1,h2,h3{margin:0}
 .shell{max-width:1180px;margin:0 auto;padding:0 16px;display:grid;grid-template-columns:230px minmax(0,620px) 310px;gap:24px;justify-content:center}
 .shell.narrow{grid-template-columns:230px minmax(0,900px)}
 header{position:sticky;top:0;height:100vh;padding:18px 0;display:flex;flex-direction:column;gap:14px}
-.brand{font-family:'Grand Hotel','Brush Script MT',cursive;font-size:2.1rem;text-decoration:none;padding:4px 14px;background:var(--ig);-webkit-background-clip:text;background-clip:text;color:transparent;width:fit-content}
+.brand{display:block;padding:4px 10px;width:fit-content}
+.brand img{height:78px;width:auto;display:block}
 header nav{display:flex;flex-direction:column;gap:2px}
 header nav a{padding:12px 16px;border-radius:12px;text-decoration:none;font-size:1.05rem;transition:.15s;display:flex;align-items:center;gap:8px}
 header nav a:hover{background:var(--accent-soft)}
@@ -146,3 +147,13 @@ label input,label textarea{margin-top:6px;font-weight:400}
   .chat{grid-template-columns:90px 1fr}
   .conv .grow{display:none}
 }
+
+/* ----- Bootstrap Icons ----- */
+.bi{line-height:1;vertical-align:-.125em}
+header nav a i{font-size:1.35rem}
+.act i{font-size:1.2rem}
+.act.on i{color:var(--like)}
+.act.on-save i{color:var(--text)}
+.act.on-save{color:var(--text)}
+.iconbtn{color:var(--accent)}
+.x i{font-size:1rem}

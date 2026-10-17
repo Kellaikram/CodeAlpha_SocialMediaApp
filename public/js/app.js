@@ -69,15 +69,15 @@ async function pollBadges() {
 
 function renderNav() {
   const u = me(), page = document.body.dataset.page, on = p => (page === p ? 'on' : '');
-  $('header').innerHTML = `<a class="brand" href="/">Circle</a>
+  $('header').innerHTML = `<a class="brand" href="/"><img src="/images/logo.png" alt="Circle"></a>
     <nav>
-      <a href="/" class="${on('home')}">🏠 <span>Home</span></a>
-      ${u ? `<a href="/messages.html" class="${on('messages')}">✉️ <span>Messages</span><b class="badge" id="b-m" hidden></b></a>
-             <a href="/notifications.html" class="${on('notifications')}">🔔 <span>Notifications</span><b class="badge" id="b-n" hidden></b></a>
-             <a href="${link(u.username)}" class="${on('profile')}">👤 <span>Profile</span></a>
-             <a href="#" id="logout">🚪 <span>Logout</span></a>`
-          : `<a href="/login.html" class="${on('login')}">🔑 <span>Login</span></a>`}
-      <a href="#" id="theme">🌓 <span>Theme</span></a>
+      <a href="/" class="${on('home')}"><i class="bi bi-house-door${page === 'home' ? '-fill' : ''}"></i> <span>Home</span></a>
+      ${u ? `<a href="/messages.html" class="${on('messages')}"><i class="bi bi-chat-dots"></i> <span>Messages</span><b class="badge" id="b-m" hidden></b></a>
+             <a href="/notifications.html" class="${on('notifications')}"><i class="bi bi-bell"></i> <span>Notifications</span><b class="badge" id="b-n" hidden></b></a>
+             <a href="${link(u.username)}" class="${on('profile')}"><i class="bi bi-person"></i> <span>Profile</span></a>
+             <a href="#" id="logout"><i class="bi bi-box-arrow-right"></i> <span>Logout</span></a>`
+          : `<a href="/login.html" class="${on('login')}"><i class="bi bi-box-arrow-in-right"></i> <span>Login</span></a>`}
+      <a href="#" id="theme"><i class="bi bi-circle-half"></i> <span>Theme</span></a>
     </nav>
     ${u ? `<div class="me">${avatar(u)}<div><strong>${esc(u.display_name)}</strong><div class="muted">@${esc(u.username)}</div></div></div>` : ''}`;
   const lo = $('#logout');
@@ -96,13 +96,13 @@ function postHTML(p) {
   const u = me();
   return `<article class="post" data-id="${p.id}">${avatar(p)}<div class="pbody">
     <div class="phead"><a href="${link(p.username)}"><strong>${esc(p.display_name)}</strong> <span class="muted">@${esc(p.username)}</span></a>
-      <span class="muted"><a href="/post.html?id=${p.id}">${ago(p.created_at)}</a>${u && u.username === p.username ? ' <button class="x" data-act="del" title="Delete">✕</button>' : ''}</span></div>
+      <span class="muted"><a href="/post.html?id=${p.id}">${ago(p.created_at)}</a>${u && u.username === p.username ? ' <button class="x" data-act="del" title="Delete"><i class="bi bi-trash"></i></button>' : ''}</span></div>
     ${p.content ? `<p class="ptext">${rich(p.content)}</p>` : ''}
     ${p.has_image ? `<img class="pimg" src="/api/posts/${p.id}/image" loading="lazy" alt="">` : ''}
     <div class="actions">
-      <button class="act ${p.liked ? 'on' : ''}" data-act="like">${p.liked ? '♥' : '♡'} <span>${p.likes}</span></button>
-      <button class="act" data-act="comments">💬 <span>${p.comments}</span></button>
-      <button class="act ${p.saved ? 'on-save' : ''}" data-act="save" title="Save">${p.saved ? '★' : '☆'}</button>
+      <button class="act ${p.liked ? 'on' : ''}" data-act="like"><i class="bi bi-heart${p.liked ? '-fill' : ''}"></i> <span>${p.likes}</span></button>
+      <button class="act" data-act="comments"><i class="bi bi-chat"></i> <span>${p.comments}</span></button>
+      <button class="act ${p.saved ? 'on-save' : ''}" data-act="save" title="Save"><i class="bi bi-bookmark${p.saved ? '-fill' : ''}"></i></button>
     </div><div class="cbox" hidden></div></div></article>`;
 }
 
@@ -110,7 +110,7 @@ async function loadComments(post) {
   const list = await api(`/posts/${post.dataset.id}/comments`), u = me();
   post.querySelector('.cbox').innerHTML = list.map(c => `<div class="comment">${avatar(c)}<div class="grow">
     <a href="${link(c.username)}"><strong>${esc(c.display_name)}</strong></a> <span class="muted">${c.created_at ? ago(c.created_at) : 'just now'}</span>
-    <div>${rich(c.content)}</div></div>${u && u.username === c.username ? `<button class="x" data-act="delc" data-cid="${c.id}" title="Delete">✕</button>` : ''}</div>`).join('') +
+    <div>${rich(c.content)}</div></div>${u && u.username === c.username ? `<button class="x" data-act="delc" data-cid="${c.id}" title="Delete"><i class="bi bi-trash"></i></button>` : ''}</div>`).join('') +
     (u ? '<div class="crow"><input class="cinput" maxlength="200" placeholder="Write a comment..."><button class="btn small" data-act="send">Send</button></div>'
        : '<p class="muted">Log in to comment.</p>');
   post.querySelector('[data-act=comments] span').textContent = list.length;
@@ -128,13 +128,13 @@ function bindPosts(box) {
         if (needLogin()) return;
         const r = await api(`/posts/${id}/like`, { method: b.classList.contains('on') ? 'DELETE' : 'POST' });
         b.classList.toggle('on', r.liked);
-        b.innerHTML = `${r.liked ? '♥' : '♡'} <span>${r.likes}</span>`;
+        b.innerHTML = `<i class="bi bi-heart${r.liked ? '-fill' : ''}"></i> <span>${r.likes}</span>`;
       } else if (act === 'save') {
         if (needLogin()) return;
         const r = await api(`/posts/${id}/save`, { method: b.classList.contains('on-save') ? 'DELETE' : 'POST' });
         b.classList.toggle('on-save', r.saved);
-        b.textContent = r.saved ? '★' : '☆';
-        toast(r.saved ? 'Saved ★' : 'Removed from saved');
+        b.innerHTML = `<i class="bi bi-bookmark${r.saved ? '-fill' : ''}"></i>`;
+        toast(r.saved ? 'Saved' : 'Removed from saved');
       } else if (act === 'del') {
         if (confirm('Delete this post?')) { await api('/posts/' + id, { method: 'DELETE' }); post.remove(); toast('Post deleted'); }
       } else if (act === 'comments') {
@@ -189,12 +189,12 @@ const pages = {
     const feed = $('#feed'), more = $('#more'), box = $('#composer'), u = me(), tag = params.get('tag');
     let mode = 'all', before = null, image = null;
 
-    if (tag) $('#tagbar').innerHTML = `<div class="panel banner"><strong>Posts tagged #${esc(tag)}</strong><a class="tag" href="/">✕ Clear</a></div>`;
-    if (!u) box.innerHTML = '<div class="panel">👋 <a class="tag" href="/login.html"><strong>Log in or register</strong></a> to post, like, comment, message and follow people.</div>';
+    if (tag) $('#tagbar').innerHTML = `<div class="panel banner"><strong>Posts tagged #${esc(tag)}</strong><a class="tag" href="/"><i class="bi bi-x-lg"></i> Clear</a></div>`;
+    if (!u) box.innerHTML = '<div class="panel"><i class="bi bi-person-circle"></i> <a class="tag" href="/login.html"><strong>Log in or register</strong></a> to post, like, comment, message and follow people.</div>';
     else {
       box.innerHTML = `<div class="composer">${avatar(u)}<div class="cwrap"><textarea id="text" rows="2" maxlength="280" placeholder="What's happening, ${esc(u.display_name)}?"></textarea>
-        <div class="preview" id="preview" hidden><img id="pimg" alt=""><button id="rmimg" title="Remove">✕</button></div>
-        <div class="bar"><button class="iconbtn" id="attach" title="Add photo">📷</button><input type="file" id="file" accept="image/*" hidden>
+        <div class="preview" id="preview" hidden><img id="pimg" alt=""><button id="rmimg" title="Remove"><i class="bi bi-x-lg"></i></button></div>
+        <div class="bar"><button class="iconbtn" id="attach" title="Add photo"><i class="bi bi-image"></i></button><input type="file" id="file" accept="image/*" hidden>
         <span class="muted" id="count">280</span><button class="btn" id="publish">Post</button></div></div></div>`;
       $('#text').oninput = e => { $('#count').textContent = 280 - e.target.value.length; };
       $('#attach').onclick = () => $('#file').click();
@@ -205,7 +205,7 @@ const pages = {
         $('#text').value = ''; $('#count').textContent = 280; $('#rmimg').click();
         feed.querySelector('.empty')?.remove();
         feed.insertAdjacentHTML('afterbegin', postHTML(p));
-        toast('Posted ✓');
+        toast('Posted');
       })());
     }
 
@@ -213,7 +213,7 @@ const pages = {
       if (reset) { feed.innerHTML = ''; before = null; }
       if (mode !== 'all' && !me()) { feed.innerHTML = '<p class="empty">Log in to use this tab.</p>'; more.hidden = true; return; }
       const list = await api(`/posts?feed=${mode}${tag ? '&tag=' + encodeURIComponent(tag) : ''}${before ? '&before=' + before : ''}`);
-      const emptyText = mode === 'saved' ? 'Nothing saved yet. Tap ☆ on a post.' : 'Nothing here yet. Follow people or write the first post!';
+      const emptyText = mode === 'saved' ? 'Nothing saved yet. Tap the bookmark on a post.' : 'Nothing here yet. Follow people or write the first post!';
       feed.insertAdjacentHTML('beforeend', list.map(postHTML).join('') || (reset ? `<p class="empty">${emptyText}</p>` : ''));
       if (list.length) before = list[list.length - 1].id;
       more.hidden = list.length < 20;
@@ -258,7 +258,7 @@ const pages = {
         <div class="stats"><div><b>${p.posts}</b>Posts</div><div data-list="followers"><b>${p.followers}</b>Followers</div><div data-list="following"><b>${p.following}</b>Following</div></div>
         <div class="btns">${p.is_me ? '<button class="btn secondary" id="edit">Edit profile</button>'
           : `<button class="btn ${p.is_following ? 'secondary' : ''}" data-follow="${esc(p.username)}">${p.is_following ? 'Following' : 'Follow'}</button>
-             ${me() ? `<a class="btn secondary" href="/messages.html?u=${encodeURIComponent(p.username)}">Message</a>` : ''}`}</div>
+             ${me() ? `<a class="btn secondary" href="/messages.html?u=${encodeURIComponent(p.username)}"><i class="bi bi-send"></i> Message</a>` : ''}`}</div>
         </div></div></div><div id="editbox"></div>`;
       const f = $('[data-follow]');
       if (f) f.onclick = () => safe(toggleFollow(f).then(draw));
@@ -280,7 +280,7 @@ const pages = {
           try {
             const r = await api('/users/me', { method: 'PUT', body: { display_name: $('#en').value, bio: $('#eb').value, avatar: newAvatar } });
             localStorage.setItem('user', JSON.stringify({ ...me(), display_name: r.display_name, has_avatar: newAvatar === undefined ? p.has_avatar : !!newAvatar }));
-            toast('Profile updated ✓'); renderNav(); draw();
+            toast('Profile updated'); renderNav(); draw();
           } catch (err) { showMsg($('#emsg'), err.message); }
         };
       };
@@ -324,7 +324,7 @@ const pages = {
       if (!current || !$('#msgs')) return;
       const msgs = await api('/messages/' + encodeURIComponent(current)), box = $('#msgs');
       const near = first || box.scrollTop + box.clientHeight >= box.scrollHeight - 60;
-      box.innerHTML = msgs.map(m => `<div class="bubble ${m.mine ? 'mine' : ''}">${esc(m.content)}</div>`).join('') || '<p class="empty">Say hi 👋</p>';
+      box.innerHTML = msgs.map(m => `<div class="bubble ${m.mine ? 'mine' : ''}">${esc(m.content)}</div>`).join('') || '<p class="empty">Say hi</p>';
       if (near) box.scrollTop = box.scrollHeight;
       loadConvs(); pollBadges();
     };
