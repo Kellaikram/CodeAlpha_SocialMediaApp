@@ -130,4 +130,4 @@ The suite starts the server on port 3998 with a temporary database and checks au
 ## Author
 
 Kella Ikram — CodeAlpha Full Stack Development Intern
-LinkedIn: https://www.linkedin.com/in/ikram-kella-113685287?utm_source=share_via&utm_content=profile&utm_medium=member_ios
+🔗 LinkedIn: ikram-kella
