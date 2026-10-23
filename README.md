@@ -49,7 +49,7 @@ A mini social network: user profiles, posts, comments, likes and a follow system
 **Requirements:** Node.js **22.5 or newer**.
 
 ```bash
-git clone https://github.com/<your-username>/CodeAlpha_SocialMediaApp.git
+git clone https://github.com/Kellaikram/CodeAlpha_SocialMediaApp.git
 cd CodeAlpha_SocialMediaApp
 npm install
 npm start
